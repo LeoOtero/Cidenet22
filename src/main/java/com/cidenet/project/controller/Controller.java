@@ -3,7 +3,9 @@ package com.cidenet.project.controller;
 import com.cidenet.project.exception.ApiException;
 import com.cidenet.project.model.request.CreateEmpleadoRequest;
 import com.cidenet.project.model.request.UpdateEmpleadoRequest;
+import com.cidenet.project.model.response.CreateResponse;
 import com.cidenet.project.model.response.EmpleadosResponseOk;
+import com.cidenet.project.model.response.UpdateResponse;
 import com.cidenet.project.service.IOrchestratorEmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +30,14 @@ public class Controller {
     }
 
     @RequestMapping(value = "/create_empleado", method = RequestMethod.POST)
-    public String createEmployee(@Valid @RequestBody CreateEmpleadoRequest request) throws ApiException {
-        return orchestratorEmpleadoService.crearEmpleadoFullData(request);
+    public ResponseEntity<Object> createEmployee(@Valid @RequestBody CreateEmpleadoRequest request) throws ApiException {
+        CreateResponse createResponse = orchestratorEmpleadoService.crearEmpleadoFullData(request);
+        return new ResponseEntity<>(createResponse, createResponse.getHttpStatus());
     }
 
     @RequestMapping(value = "/update_empleado", method = RequestMethod.PUT)
-    public String updateEmployees(@Valid @RequestBody UpdateEmpleadoRequest request) throws ApiException {
-        return orchestratorEmpleadoService.updateEmpleado(request);
+    public ResponseEntity<Object> updateEmployees(@Valid @RequestBody UpdateEmpleadoRequest request) throws ApiException {
+        UpdateResponse updateResponse = orchestratorEmpleadoService.updateEmpleado(request);
+        return new ResponseEntity<>(updateResponse, updateResponse.getHttpStatus());
     }
 }

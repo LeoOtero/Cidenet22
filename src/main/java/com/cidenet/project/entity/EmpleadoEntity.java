@@ -10,7 +10,7 @@ public class EmpleadoEntity {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @SequenceGenerator(name = "emp_seq")
     private int ID;
-    @OneToOne(mappedBy = "empleado")
+    @OneToOne(mappedBy = "empleado", cascade=CascadeType.ALL)
     private InfoEmpleoActualEntity infoEmpleoActualEntity;
     @Column(name = "NroIdentificacion", nullable = false)
     private String nroIdentificacion;

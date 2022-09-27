@@ -2,6 +2,7 @@ package com.cidenet.project.service.impl;
 
 import com.cidenet.project.entity.EmpleadoEntity;
 import com.cidenet.project.entity.InfoEmpleoActualEntity;
+import com.cidenet.project.exception.ApiException;
 import com.cidenet.project.model.dto.EmpleadoDTO;
 import com.cidenet.project.model.request.CreateEmpleadoRequest;
 import com.cidenet.project.model.request.UpdateEmpleadoRequest;
@@ -9,11 +10,15 @@ import com.cidenet.project.repository.EmpleadosRepository;
 import com.cidenet.project.service.IEmpleadoService;
 import com.cidenet.project.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +44,7 @@ public class EmpleadoService implements IEmpleadoService {
     }
 
     @Transactional
-    public String createEmpleado(CreateEmpleadoRequest req) {
+    public String createEmpleado(CreateEmpleadoRequest req) throws ApiException {
         try {
             logger.logMessage(LoggingLevels.INFO, "Creating Employee");
             EmpleadoEntity e = new EmpleadoEntity();
@@ -67,16 +72,16 @@ public class EmpleadoService implements IEmpleadoService {
             else {
                 i.setFechaDeIngreso(UtilClass.setDateAdm(req.getFechaDeIngreso()));
             }
-            i.setFechaDeIngreso(Date.valueOf(req.getFechaDeIngreso()));
+            //i.setFechaDeIngreso(Date.valueOf(req.getFechaDeIngreso()));
             i.setPaisDeEmpleo(req.getPaisDeEmpleo());
             i.setFechaYHoraDeRegistro(new java.sql.Date(System.currentTimeMillis()));
             e.setInfoEmpleoActualEntity(i);
+            i.setEmpleado(e);
             logger.logMessage(LoggingLevels.INFO, "Saving Employee");
             empleadosRepository.save(e);
-            // infoEmpleoActualRepository.save(i);
             return ApiConstants.EMPLOYEE_CREATED;
         } catch (Exception e) {
-            return (e.getMessage());
+            throw new ApiException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

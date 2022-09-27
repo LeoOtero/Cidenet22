@@ -13,7 +13,7 @@ public class UtilClass {
 
     public static boolean checkDate(String date){
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate ld = LocalDate.parse(date, formatter);
             boolean flag = ld.isBefore(LocalDate.now().minusMonths(1))? true : false;
             return flag;

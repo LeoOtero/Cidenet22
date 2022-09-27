@@ -10,6 +10,7 @@ public class InfoEmpleoActualEntity {
     @Id
     private int ID;
 
+
     @OneToOne
     @JoinColumn(name = "id")
     @MapsId
@@ -96,5 +97,14 @@ public class InfoEmpleoActualEntity {
 
     public void setFechaYHoraDeRegistro(Date fechaYHoraDeRegistro) {
         this.fechaYHoraDeRegistro = fechaYHoraDeRegistro;
+    }
+
+
+    public EmpleadoEntity getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(EmpleadoEntity empleado) {
+        this.empleado = empleado;
     }
 }
